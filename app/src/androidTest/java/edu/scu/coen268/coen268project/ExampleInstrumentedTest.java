@@ -1,4 +1,4 @@
-package edu.scu.coen268.lab2;
+package edu.scu.coen268.coen268project;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("edu.scu.coen268.lab2", appContext.getPackageName());
+        assertEquals("edu.scu.coen268.coen268project", appContext.getPackageName());
     }
 }

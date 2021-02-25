@@ -1,4 +1,4 @@
-package edu.scu.coen268.lab2;
+package edu.scu.coen268.coen268project;
 
 import androidx.appcompat.app.AppCompatActivity;
 
