@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="edu.scu.coen268.coen268project">
+    package="edu.scu.coen268.fetch">
 
     <application
         android:allowBackup="true"
@@ -8,14 +8,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.coen268project">
-        <activity android:name="edu.scu.coen268.coen268project.ConstraintExample"></activity>
-        <activity android:name="edu.scu.coen268.coen268project.FrameExample" />
-        <activity android:name="edu.scu.coen268.coen268project.GridExample" />
-        <activity android:name="edu.scu.coen268.coen268project.TableExample" />
-        <activity android:name="edu.scu.coen268.coen268project.RelativeExample" />
-        <activity android:name="edu.scu.coen268.coen268project.LinearExample" />
-        <activity android:name="edu.scu.coen268.coen268project.MainActivity">
+        android:theme="@style/Theme.fetch">
+        <activity android:name="edu.scu.coen268.fetch.ConstraintExample"></activity>
+        <activity android:name="edu.scu.coen268.fetch.FrameExample" />
+        <activity android:name="edu.scu.coen268.fetch.GridExample" />
+        <activity android:name="edu.scu.coen268.fetch.TableExample" />
+        <activity android:name="edu.scu.coen268.fetch.RelativeExample" />
+        <activity android:name="edu.scu.coen268.fetch.LinearExample" />
+        <activity android:name="edu.scu.coen268.fetch.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,14 +1,14 @@
-package edu.scu.coen268.coen268project;
+package edu.scu.coen268.fetch;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class TableExample extends AppCompatActivity {
+public class RelativeExample extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_table_example);
+        setContentView(R.layout.activity_relative_example);
     }
 }

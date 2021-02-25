@@ -7,7 +7,7 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "edu.scu.coen268.coen268project"
+        applicationId "edu.scu.coen268.fetch"
         minSdkVersion 24
         targetSdkVersion 30
         versionCode 1

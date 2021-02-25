@@ -1,4 +1,4 @@
-package edu.scu.coen268.coen268project;
+package edu.scu.coen268.fetch;
 
 import org.junit.Test;
 

@@ -1,14 +1,14 @@
-package edu.scu.coen268.coen268project;
+package edu.scu.coen268.fetch;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class LinearExample extends AppCompatActivity {
+public class ConstraintExample extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_linear_example);
+        setContentView(R.layout.activity_constraint_example);
     }
 }
