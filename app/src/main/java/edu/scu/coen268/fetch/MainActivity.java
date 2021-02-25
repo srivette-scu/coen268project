@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         }
         Log.i("TAG", "set");
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.list_activity);
     }
 
     public void showMain() {
