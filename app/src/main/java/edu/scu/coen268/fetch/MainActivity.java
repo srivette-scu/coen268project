@@ -21,16 +21,8 @@ public class MainActivity extends AppCompatActivity {
         setTheme(R.style.Theme_fetch);
         setContentView(R.layout.splash_page);
 
-        Timer timer = new Timer();
-        MyTimerTask myTimerTask = new MyTimerTask();
-        timer.schedule(myTimerTask, 3000);
-
-        while(!showMain) {
-            Log.i("TAG", "not set");
-        }
-        Log.i("TAG", "set");
-
-        setContentView(R.layout.list_activity);
+        Intent intent = new Intent(this, FetchList.class);
+        startActivity(intent);
     }
 
     public void showMain() {
