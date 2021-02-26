@@ -4,11 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -17,9 +12,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Launch with a splash page
         setTheme(R.style.Theme_fetch);
-        setContentView(R.layout.splash_page);
+        setContentView(R.layout.splash_layout);
 
-        Intent intent = new Intent(this, FetchList.class);
+        Intent intent = new Intent(this, ListActivity.class);
         startActivity(intent);
     }
 }

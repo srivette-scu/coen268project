@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.fetch">
         <activity android:name="edu.scu.coen268.fetch.SplashActivity"/>
-        <activity android:name="edu.scu.coen268.fetch.FetchList"/>
+        <activity android:name="edu.scu.coen268.fetch.ListActivity"/>
         <activity android:name="edu.scu.coen268.fetch.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

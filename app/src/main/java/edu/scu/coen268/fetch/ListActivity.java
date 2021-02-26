@@ -2,6 +2,7 @@ package edu.scu.coen268.fetch;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -13,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FetchList extends AppCompatActivity {
+public class ListActivity extends AppCompatActivity {
 
     private ListView listView;
     List<String> listItems = new ArrayList<>();
@@ -22,7 +23,7 @@ public class FetchList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.list_activity);
+        setContentView(R.layout.list_layout);
 
         listView = findViewById(R.id.list_view);
         listItems.add("Piano");
@@ -59,5 +60,10 @@ public class FetchList extends AppCompatActivity {
         });
 
         builder.show();
+    }
+
+    public void gotoSettings(View view) {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 }
