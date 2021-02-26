@@ -9,12 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.fetch">
-        <activity android:name="edu.scu.coen268.fetch.ConstraintExample"></activity>
-        <activity android:name="edu.scu.coen268.fetch.FrameExample" />
-        <activity android:name="edu.scu.coen268.fetch.GridExample" />
-        <activity android:name="edu.scu.coen268.fetch.TableExample" />
-        <activity android:name="edu.scu.coen268.fetch.RelativeExample" />
-        <activity android:name="edu.scu.coen268.fetch.LinearExample" />
         <activity android:name="edu.scu.coen268.fetch.SplashActivity"/>
         <activity android:name="edu.scu.coen268.fetch.FetchList"/>
         <activity android:name="edu.scu.coen268.fetch.MainActivity">

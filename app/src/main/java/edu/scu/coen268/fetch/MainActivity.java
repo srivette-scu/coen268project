@@ -11,8 +11,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
-    private boolean showMain = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,46 +21,5 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, FetchList.class);
         startActivity(intent);
-    }
-
-    public void showMain() {
-        showMain = true;
-    }
-
-    public void navigateToLinear(View view) {
-        Intent intent = new Intent(this, LinearExample.class);
-        startActivity(intent);
-    }
-
-    public void navigateToRelative(View view) {
-        Intent intent = new Intent(this, RelativeExample.class);
-        startActivity(intent);
-    }
-
-    public void navigateToTable(View view) {
-        Intent intent = new Intent(this, TableExample.class);
-        startActivity(intent);
-    }
-
-    public void navigateToGrid(View view) {
-        Intent intent = new Intent(this, GridExample.class);
-        startActivity(intent);
-    }
-
-    public void navigateToFrame(View view) {
-        Intent intent = new Intent(this, FrameExample.class);
-        startActivity(intent);
-    }
-
-    public void navigateToConstraint(View view) {
-        Intent intent = new Intent(this, ConstraintExample.class);
-        startActivity(intent);
-    }
-
-    public class MyTimerTask extends TimerTask {
-        @Override
-        public void run() {
-            showMain();
-        }
     }
 }
