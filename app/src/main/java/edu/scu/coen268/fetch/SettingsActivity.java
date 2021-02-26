@@ -2,6 +2,7 @@ package edu.scu.coen268.fetch;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -46,7 +47,7 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 String newItem = editText.getText().toString();
                 feedbackAndHelpList.add(newItem);
-                Toast.makeText(SettingsActivity.this, "Thanks you!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingsActivity.this, "Thank you!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -61,6 +62,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void termsAndConditions(View view) {
-
+        Intent intent = new Intent(this, TermsAndConditionsActivity.class);
+        startActivity(intent);
     }
 }

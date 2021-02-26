@@ -47,7 +47,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="30dp"
             android:text="15 Minute Bike Ride"
-            android:onClick="dikingDistance"/>
+            android:onClick="bikingDistance"/>
         <RadioButton
             android:layout_width="match_parent"
             android:layout_height="match_parent"

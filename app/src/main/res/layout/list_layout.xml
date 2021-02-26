@@ -7,9 +7,10 @@
     xmlns:tools="http://schemas.android.com/tools" >
 
     <LinearLayout
+        android:id="@+id/list_banner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent" 
+        app:layout_constraintTop_toTopOf="parent"
         android:orientation="horizontal"
         android:background="@color/light_blue" >
 
@@ -17,10 +18,10 @@
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:src="@drawable/settings"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"
+            android:onClick="gotoSettings"/>
         
         <TextView
-            android:id="@+id/list_banner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"

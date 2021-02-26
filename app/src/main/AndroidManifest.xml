@@ -12,6 +12,7 @@
         <activity android:name="edu.scu.coen268.fetch.SplashActivity"/>
         <activity android:name="edu.scu.coen268.fetch.ListActivity"/>
         <activity android:name="edu.scu.coen268.fetch.SettingsActivity"/>
+        <activity android:name="edu.scu.coen268.fetch.TermsAndConditionsActivity"/>
         <activity android:name="edu.scu.coen268.fetch.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
