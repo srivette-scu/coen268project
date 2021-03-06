@@ -9,6 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.fetch">
+        <service
+            android:name=".LookupService"
+            android:enabled="true"
+            android:exported="true">
+        </service>
         <activity android:name="edu.scu.coen268.fetch.SplashActivity"/>
         <activity android:name="edu.scu.coen268.fetch.ListActivity"/>
         <activity android:name="edu.scu.coen268.fetch.SettingsActivity"/>

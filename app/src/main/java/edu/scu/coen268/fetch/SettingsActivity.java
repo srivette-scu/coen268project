@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -14,29 +15,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SettingsActivity extends AppCompatActivity {
+    String TAG = this.getClass().getCanonicalName();
 
     public double searchRadiusMiles = 1;
     public List<String> feedbackAndHelpList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i(TAG, "onCreate");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_layout);
     }
 
     public void walkingDistance(View view) {
+        Log.i(TAG, "walkingDistance");
+
         searchRadiusMiles = 1;
     }
 
     public void bikingDistance(View view) {
+        Log.i(TAG, "bikingDistance");
+
         searchRadiusMiles = 4;
     }
 
     public void drivingDistance(View view) {
+        Log.i(TAG, "drivingDistance");
+
         searchRadiusMiles = 8;
     }
 
     public void helpAndFeedback(View view) {
+        Log.i(TAG, "helpAndFeedback");
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("We welcome your feedback and questions");
         EditText editText = new EditText(this);
@@ -62,6 +74,8 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void termsAndConditions(View view) {
+        Log.i(TAG, "termsAndConditions");
+
         Intent intent = new Intent(this, TermsAndConditionsActivity.class);
         startActivity(intent);
     }
