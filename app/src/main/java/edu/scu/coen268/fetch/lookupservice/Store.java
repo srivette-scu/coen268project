@@ -1,18 +1,18 @@
 package edu.scu.coen268.fetch.lookupservice;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class Store {
     String TAG = this.getClass().getCanonicalName();
 
     private final String name;
     private final String address;
-    private final double latitude;
-    private final double longitude;
+    private final LatLng latLng;
 
     public Store(String name, String address, double latitude, double longitude) {
         this.name = name;
         this.address = address;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.latLng = new LatLng(latitude, longitude);
     }
 
     public String getName() {
@@ -23,11 +23,7 @@ public class Store {
         return address;
     }
 
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
+    public LatLng getLatLng() {
+        return latLng;
     }
 }

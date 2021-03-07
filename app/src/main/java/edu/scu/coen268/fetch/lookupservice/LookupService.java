@@ -17,9 +17,9 @@ import java.util.Set;
 public class LookupService extends Service {
     String TAG = this.getClass().getCanonicalName();
 
-    private static double SCU_LAT = 37.3507689;
-    private static double SCU_LONG = -121.9398422;
-    private static double ONE_MILE = 1;
+    public static double SCU_LAT = 37.3507689;
+    public static double SCU_LONG = -121.9398422;
+    public static double ONE_MILE = 1;
 
     private Binder binder = new LookupServiceBinder();
 
@@ -45,6 +45,27 @@ public class LookupService extends Service {
         // populate DB
 
         return START_NOT_STICKY;
+    }
+
+    public Set<Store> getStoresForItemListDummy(List<String> items) {
+        Set<Store> stores = new HashSet<>();
+        stores.add(new Store(
+                "Target",
+                "some address",
+                37.350170761350526,
+                -121.96088796957218));
+        stores.add(new Store(
+                "Trader Joe's",
+                "some address",
+                37.36787141649834,
+                -122.03588330586433));
+        stores.add(new Store(
+                "Whole Foods",
+                "some address",
+                37.32351469164324,
+                -122.03984393705552));
+
+        return stores;
     }
 
     public Set<Store> getStoresForItemList(List<String> items) {
@@ -79,8 +100,8 @@ public class LookupService extends Service {
         contentValues.put(Schemas.StoreTable.KEYWORD, keyword);
         contentValues.put(Schemas.StoreTable.STORE_NAME, store.getName());
         contentValues.put(Schemas.StoreTable.ADDRESS, store.getAddress());
-        contentValues.put(Schemas.StoreTable.LATITUDE, store.getLatitude());
-        contentValues.put(Schemas.StoreTable.LONGITUDE, store.getLongitude());
+        contentValues.put(Schemas.StoreTable.LATITUDE, store.getLatLng().latitude);
+        contentValues.put(Schemas.StoreTable.LONGITUDE, store.getLatLng().longitude);
 
         long recordId = db.insert(Schemas.StoreTable.TABLE_NAME, null, contentValues);
         db.close();

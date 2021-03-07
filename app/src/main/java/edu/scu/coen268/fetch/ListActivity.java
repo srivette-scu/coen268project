@@ -16,6 +16,8 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -94,20 +96,33 @@ public class ListActivity extends AppCompatActivity {
     }
 
     public void gotoSettings(View view) {
-        Log.i(TAG, "gotoSettings");
-
-        Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);
+        gotoMaps(view);
+//        Log.i(TAG, "gotoSettings");
+//
+//        Intent intent = new Intent(this, SettingsActivity.class);
+//        startActivity(intent);
     }
 
     public void gotoMaps(View view) {
-        //Set<Store> stores = lookupService.getStoresForItemList(listItems);
-        Uri directionsUri = Uri.parse("https://www.google.com/maps/dir" +
-                "/37.3491901,-121.9427325" +
-                "/37.35234703859599,+-121.98987305042337" +
-                "/37.35164210849098,+-122.04374628675674");
-        Intent mapsIntent = new Intent(Intent.ACTION_VIEW, directionsUri);
+        Set<Store> stores = lookupService.getStoresForItemListDummy(listItems);
+
+        StringBuilder mapsAddressBuilder = new StringBuilder("https://www.google.com/maps/dir");
+        mapsAddressBuilder.append("/" + LookupService.SCU_LAT + "," + LookupService.SCU_LONG);
+
+        for (Store store : stores) {
+            mapsAddressBuilder.append("/" + store.getLatLng().latitude + "," + store.getLatLng().longitude);
+        }
+
+//        Uri directionsUri = Uri.parse("https://www.google.com/maps/dir" +
+//                "/37.3491901,-121.9427325" +
+//                "/37.35234703859599,+-121.98987305042337" +
+//                "/37.35164210849098,+-122.04374628675674");
+        Intent mapsIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mapsAddressBuilder.toString()));
         startActivity(mapsIntent);
+    }
+
+    public LatLng getCurrentLocation() {
+        return new LatLng(LookupService.SCU_LAT, LookupService.SCU_LONG);
     }
 
     public void startLookupService() {
