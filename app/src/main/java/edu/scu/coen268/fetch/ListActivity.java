@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -15,8 +16,15 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
+import edu.scu.coen268.fetch.lookupservice.LookupService;
+import edu.scu.coen268.fetch.lookupservice.Store;
+import edu.scu.coen268.fetch.lookupservice.TestData;
 
 public class ListActivity extends AppCompatActivity {
     String TAG = this.getClass().getCanonicalName();
@@ -95,10 +103,29 @@ public class ListActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void getStores(View view) {
-        Log.i(TAG, "getStores");
+    public void gotoMaps(View view) {
+        Log.i(TAG, "gotoMaps");
 
-        List<Store> stores = lookupService.getStoresForItemList(listItems);
+        Set<Store> stores = lookupService.getStoresForItemListDummy(listItems, getCurrentLocation());
+
+        LatLng currentLocation = getCurrentLocation();
+
+        StringBuilder mapsAddressBuilder = new StringBuilder("https://www.google.com/maps/dir");
+        mapsAddressBuilder.append("/" + currentLocation.latitude + "," + currentLocation.longitude);
+
+        for (Store store : stores) {
+            mapsAddressBuilder.append("/" + store.getLatLng().latitude + "," + store.getLatLng().longitude);
+        }
+
+        Intent mapsIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mapsAddressBuilder.toString()));
+        startActivity(mapsIntent);
+    }
+
+    public LatLng getCurrentLocation() {
+        Log.i(TAG, "getCurrentLocation");
+
+        // TODO implement this with both test and real location lookup
+        return TestData.scuLatLng;
     }
 
     public void startLookupService() {

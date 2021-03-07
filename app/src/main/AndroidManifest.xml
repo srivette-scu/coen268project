@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.fetch">
         <service
-            android:name=".LookupService"
+            android:name=".lookupservice.LookupService"
             android:enabled="true"
             android:exported="true">
         </service>
