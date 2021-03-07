@@ -32,11 +32,15 @@ public class StoreInfoDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.i(TAG, "onCreate");
+
         db.execSQL(CREATE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        Log.i(TAG, "onUpgrade");
+
         db.execSQL(DROP_TABLE);
         onCreate(db);
     }

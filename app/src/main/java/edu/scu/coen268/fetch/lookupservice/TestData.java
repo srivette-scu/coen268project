@@ -1,6 +1,7 @@
 package edu.scu.coen268.fetch.lookupservice;
 
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -8,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class TestData {
+    private static String TAG = "TestData";
+
     private TestData() {
         // Do not instantiate
     }
@@ -47,6 +50,8 @@ public final class TestData {
     }
 
     public static void populateDBWithTestData(SQLiteDatabase db) {
+        Log.i(TAG, "populateDbWithTestData");
+
         for (Map.Entry<String, Store> entry : keywordToStoreMap.entrySet()) {
             StoreInfoDBHelper.addToDb(db, entry.getKey(), entry.getValue());
         }
