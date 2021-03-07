@@ -24,6 +24,7 @@ import java.util.Set;
 
 import edu.scu.coen268.fetch.lookupservice.LookupService;
 import edu.scu.coen268.fetch.lookupservice.Store;
+import edu.scu.coen268.fetch.lookupservice.TestData;
 
 public class ListActivity extends AppCompatActivity {
     String TAG = this.getClass().getCanonicalName();
@@ -96,33 +97,35 @@ public class ListActivity extends AppCompatActivity {
     }
 
     public void gotoSettings(View view) {
-        gotoMaps(view);
-//        Log.i(TAG, "gotoSettings");
-//
-//        Intent intent = new Intent(this, SettingsActivity.class);
-//        startActivity(intent);
+        Log.i(TAG, "gotoSettings");
+
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     public void gotoMaps(View view) {
-        Set<Store> stores = lookupService.getStoresForItemListDummy(listItems);
+        Log.i(TAG, "gotoMaps");
+
+        Set<Store> stores = lookupService.getStoresForItemListDummy(listItems, getCurrentLocation());
+
+        LatLng currentLocation = getCurrentLocation();
 
         StringBuilder mapsAddressBuilder = new StringBuilder("https://www.google.com/maps/dir");
-        mapsAddressBuilder.append("/" + LookupService.SCU_LAT + "," + LookupService.SCU_LONG);
+        mapsAddressBuilder.append("/" + currentLocation.latitude + "," + currentLocation.longitude);
 
         for (Store store : stores) {
             mapsAddressBuilder.append("/" + store.getLatLng().latitude + "," + store.getLatLng().longitude);
         }
 
-//        Uri directionsUri = Uri.parse("https://www.google.com/maps/dir" +
-//                "/37.3491901,-121.9427325" +
-//                "/37.35234703859599,+-121.98987305042337" +
-//                "/37.35164210849098,+-122.04374628675674");
         Intent mapsIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mapsAddressBuilder.toString()));
         startActivity(mapsIntent);
     }
 
     public LatLng getCurrentLocation() {
-        return new LatLng(LookupService.SCU_LAT, LookupService.SCU_LONG);
+        Log.i(TAG, "getCurrentLocation");
+
+        // TODO implement this with both test and real location lookup
+        return TestData.scuLatLng;
     }
 
     public void startLookupService() {

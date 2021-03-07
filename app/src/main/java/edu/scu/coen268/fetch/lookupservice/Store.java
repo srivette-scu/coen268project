@@ -3,8 +3,6 @@ package edu.scu.coen268.fetch.lookupservice;
 import com.google.android.gms.maps.model.LatLng;
 
 public class Store {
-    String TAG = this.getClass().getCanonicalName();
-
     private final String name;
     private final String address;
     private final LatLng latLng;
