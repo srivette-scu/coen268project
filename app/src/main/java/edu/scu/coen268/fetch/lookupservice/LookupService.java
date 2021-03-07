@@ -96,8 +96,7 @@ public class LookupService extends Service {
                 return 0;
             }
         });
-
-       // TODO take the closes if and only if its within the search radius
+        
         if (getDistanceMiles(stores.get(0).getLatLng(), currentLatLng) <= rangeInMiles) {
             return Optional.of(stores.get(0));
         }
