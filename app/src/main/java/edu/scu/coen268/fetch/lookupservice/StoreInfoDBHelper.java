@@ -46,14 +46,13 @@ public class StoreInfoDBHelper extends SQLiteOpenHelper {
 
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(Schemas.StoreTable.KEYWORD, keyword);
+        contentValues.put(Schemas.StoreTable.KEYWORD, keyword.toLowerCase());
         contentValues.put(Schemas.StoreTable.STORE_NAME, store.getName());
         contentValues.put(Schemas.StoreTable.ADDRESS, store.getAddress());
         contentValues.put(Schemas.StoreTable.LATITUDE, store.getLatLng().latitude);
         contentValues.put(Schemas.StoreTable.LONGITUDE, store.getLatLng().longitude);
 
         long recordId = db.insert(Schemas.StoreTable.TABLE_NAME, null, contentValues);
-        db.close();
 
         return recordId;
     }
@@ -69,7 +68,7 @@ public class StoreInfoDBHelper extends SQLiteOpenHelper {
                 Schemas.StoreTable.LATITUDE,
                 Schemas.StoreTable.LONGITUDE};
         String selection = Schemas.StoreTable.KEYWORD + " LIKE? ";
-        String[] selectionArgs = {"%" + keyword + "%"};
+        String[] selectionArgs = {"%" + keyword.toLowerCase() + "%"};
 
         Cursor cursor = db.query(
                 Schemas.StoreTable.TABLE_NAME,

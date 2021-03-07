@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -45,8 +46,9 @@ public class ListActivity extends AppCompatActivity {
         setContentView(R.layout.list_layout);
 
         listView = findViewById(R.id.list_view);
-        listItems.add("Piano");
-        listItems.add("Lute");
+        listItems.add("Fish");
+        listItems.add("Cheese");
+        listItems.add("Soap");
 
         arrayAdapter = new ArrayAdapter<String>(
                 this,
@@ -106,7 +108,15 @@ public class ListActivity extends AppCompatActivity {
     public void gotoMaps(View view) {
         Log.i(TAG, "gotoMaps");
 
-        Set<Store> stores = lookupService.getStoresForItemListDummy(listItems, getCurrentLocation());
+        Set<Store> stores = lookupService.getStoresForItemList(listItems, getCurrentLocation());
+
+        if (stores.isEmpty()) {
+            Toast.makeText(
+                    getApplicationContext(),
+                    "No stores within search radius, try expanding your search.",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
 
         LatLng currentLocation = getCurrentLocation();
 
