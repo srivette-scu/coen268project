@@ -13,7 +13,6 @@ public final class TestData {
     }
 
     public static LatLng scuLatLng = new LatLng(37.3507689, -121.9398422);
-    public static double bikingDistance = 4;
 
     public static Store target = new Store(
             "Target",

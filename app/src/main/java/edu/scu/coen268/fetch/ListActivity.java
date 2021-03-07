@@ -45,8 +45,9 @@ public class ListActivity extends AppCompatActivity {
         setContentView(R.layout.list_layout);
 
         listView = findViewById(R.id.list_view);
-        listItems.add("Piano");
-        listItems.add("Lute");
+        listItems.add("Fish");
+        listItems.add("Cheese");
+        listItems.add("Soap");
 
         arrayAdapter = new ArrayAdapter<String>(
                 this,
@@ -106,7 +107,7 @@ public class ListActivity extends AppCompatActivity {
     public void gotoMaps(View view) {
         Log.i(TAG, "gotoMaps");
 
-        Set<Store> stores = lookupService.getStoresForItemListDummy(listItems, getCurrentLocation());
+        Set<Store> stores = lookupService.getStoresForItemList(listItems, getCurrentLocation());
 
         LatLng currentLocation = getCurrentLocation();
 

@@ -16,6 +16,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import edu.scu.coen268.fetch.FetchApplication;
+
 public class LookupService extends Service {
     String TAG = this.getClass().getCanonicalName();
 
@@ -56,11 +58,13 @@ public class LookupService extends Service {
     public Set<Store> getStoresForItemList(List<String> items, LatLng currentLocation) {
         Log.i(TAG, "getStoresForItemList");
 
+        double searchRadiusMiles = ((FetchApplication) this.getApplication()).getSearchRadiusMiles();
+
         Set<Store> stores = new HashSet<>();
         for (String item : items) {
             List<Store> foundStores = StoreInfoDBHelper.getStoresForKeyword(getDb(false), item);
             if (!foundStores.isEmpty()) {
-                stores.add(pickClosestStoreInRange(foundStores, currentLocation, TestData.bikingDistance));
+                stores.add(pickClosestStoreInRange(foundStores, currentLocation, searchRadiusMiles));
             }
         }
 
