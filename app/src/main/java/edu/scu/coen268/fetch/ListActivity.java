@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -108,6 +109,14 @@ public class ListActivity extends AppCompatActivity {
         Log.i(TAG, "gotoMaps");
 
         Set<Store> stores = lookupService.getStoresForItemList(listItems, getCurrentLocation());
+
+        if (stores.isEmpty()) {
+            Toast.makeText(
+                    getApplicationContext(),
+                    "No stores within search radius, try expanding your search.",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
 
         LatLng currentLocation = getCurrentLocation();
 
