@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -17,6 +18,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
+import edu.scu.coen268.fetch.lookupservice.LookupService;
+import edu.scu.coen268.fetch.lookupservice.Store;
 
 public class ListActivity extends AppCompatActivity {
     String TAG = this.getClass().getCanonicalName();
@@ -95,10 +100,14 @@ public class ListActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void getStores(View view) {
-        Log.i(TAG, "getStores");
-
-        List<Store> stores = lookupService.getStoresForItemList(listItems);
+    public void gotoMaps(View view) {
+        //Set<Store> stores = lookupService.getStoresForItemList(listItems);
+        Uri directionsUri = Uri.parse("https://www.google.com/maps/dir" +
+                "/37.3491901,-121.9427325" +
+                "/37.35234703859599,+-121.98987305042337" +
+                "/37.35164210849098,+-122.04374628675674");
+        Intent mapsIntent = new Intent(Intent.ACTION_VIEW, directionsUri);
+        startActivity(mapsIntent);
     }
 
     public void startLookupService() {
