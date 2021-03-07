@@ -95,7 +95,6 @@
             android:layout_height="82dp"
             android:layout_width="82dp"
             android:scaleType="fitXY"
-            android:background=""
             android:layout_weight="1"
             android:layout_marginRight="30dp"
             app:srcCompat="@drawable/delete" />
@@ -106,7 +105,6 @@
             android:layout_height="82dp"
             android:layout_width="82dp"
             android:scaleType="fitXY"
-            android:background=""
             android:layout_weight="1"
             app:srcCompat="@drawable/store" />
 
@@ -116,7 +114,6 @@
             android:layout_height="82dp"
             android:layout_width="82dp"
             android:scaleType="fitXY"
-            android:background=""
             android:onClick="addToList"
             android:layout_weight="1"
             app:srcCompat="@drawable/add" />
