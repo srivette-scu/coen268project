@@ -17,7 +17,6 @@ import java.util.List;
 public class SettingsActivity extends AppCompatActivity {
     String TAG = this.getClass().getCanonicalName();
 
-    public double searchRadiusMiles = 1;
     public List<String> feedbackAndHelpList = new ArrayList<>();
 
     @Override
@@ -31,19 +30,19 @@ public class SettingsActivity extends AppCompatActivity {
     public void walkingDistance(View view) {
         Log.i(TAG, "walkingDistance");
 
-        searchRadiusMiles = 1;
+        ((FetchApplication) this.getApplication()).setSearchRadiusMiles(1);
     }
 
     public void bikingDistance(View view) {
         Log.i(TAG, "bikingDistance");
 
-        searchRadiusMiles = 4;
+        ((FetchApplication) this.getApplication()).setSearchRadiusMiles(4);
     }
 
     public void drivingDistance(View view) {
         Log.i(TAG, "drivingDistance");
 
-        searchRadiusMiles = 8;
+        ((FetchApplication) this.getApplication()).setSearchRadiusMiles(7);
     }
 
     public void helpAndFeedback(View view) {

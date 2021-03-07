@@ -13,7 +13,6 @@ public final class TestData {
     }
 
     public static LatLng scuLatLng = new LatLng(37.3507689, -121.9398422);
-    public static double bikingDistance = 4;
 
     public static Store target = new Store(
             "Target",
@@ -33,11 +32,18 @@ public final class TestData {
             37.36787141649834,
             -122.03588330586433);
 
+    public static Store kharkov = new Store(
+            "Kharkov",
+            "The Ukraine",
+            49.978120510315215,
+            36.22342206859459);
+
     public static Map<String, Store> keywordToStoreMap = new HashMap<>();
     static {
         keywordToStoreMap.put("fish", traderJoes);
         keywordToStoreMap.put("cheese", wholeFoods);
         keywordToStoreMap.put("soap", target);
+        keywordToStoreMap.put("soap", kharkov);
     }
 
     public static void populateDBWithTestData(SQLiteDatabase db) {
