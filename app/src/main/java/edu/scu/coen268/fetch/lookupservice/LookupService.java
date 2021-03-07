@@ -48,15 +48,6 @@ public class LookupService extends Service {
         return START_NOT_STICKY;
     }
 
-    public Set<Store> getStoresForItemListDummy(List<String> items, LatLng currentLocation) {
-        Set<Store> stores = new HashSet<>();
-        stores.add(TestData.target);
-        stores.add(TestData.traderJoes);
-        stores.add(TestData.wholeFoods);
-
-        return stores;
-    }
-
     public Set<Store> getStoresForItemList(List<String> items, LatLng currentLocation) {
         Log.i(TAG, "getStoresForItemList");
 
@@ -106,8 +97,10 @@ public class LookupService extends Service {
 
     // This method was adapted from
     // https://stackoverflow.com/questions/3694380/calculating-distance-between-two-points-using-latitude-longitude
-    // because re-deriving it was silly
+    // because re-deriving it is silly
     public double getDistanceMiles(LatLng origin, LatLng dest) {
+        Log.i(TAG, "getDistanceMiles");
+
         final int R = 6371; // Radius of the earth
 
         double latDistance = Math.toRadians(dest.latitude - origin.latitude);
@@ -122,6 +115,8 @@ public class LookupService extends Service {
     }
 
     public SQLiteDatabase getDb(boolean writeable) {
+        Log.i(TAG, "getDb");
+
         StoreInfoDBHelper dbHelper = new StoreInfoDBHelper(getApplicationContext());
         if (writeable) {
             return dbHelper.getWritableDatabase();
