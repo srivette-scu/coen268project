@@ -81,15 +81,42 @@
         app:layout_constraintTop_toBottomOf="@id/list_banner"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <ImageButton
-        android:id="@+id/edit_list_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background=""
-        android:onClick="addToList"
-        android:layout_margin="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/fab" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="bottom"
+        android:layout_marginBottom="30dp"
+        android:layout_marginHorizontal="30dp">
+
+        <ImageButton
+            android:id="@+id/delete_button"
+            android:layout_height="82dp"
+            android:scaleType="fitXY"
+            android:background=""
+            android:layout_weight="1"
+            android:layout_marginRight="30dp"
+            app:srcCompat="@drawable/delete" />
+
+        <ImageButton
+            android:id="@+id/move_button"
+            android:layout_marginHorizontal="30dp"
+            android:layout_height="82dp"
+            android:scaleType="fitXY"
+            android:background=""
+            android:layout_weight="1"
+            app:srcCompat="@drawable/store" />
+
+        <ImageButton
+            android:id="@+id/edit_list_button"
+            android:layout_marginLeft="30dp"
+            android:layout_height="82dp"
+            android:scaleType="fitXY"
+            android:background=""
+            android:onClick="addToList"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/add" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
