@@ -27,7 +27,6 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import edu.scu.coen268.fetch.lookupservice.LookupService;
 import edu.scu.coen268.fetch.lookupservice.Store;
@@ -114,7 +113,7 @@ public class ListActivity extends AppCompatActivity {
     public void gotoMaps(View view) {
         Log.i(TAG, "gotoMaps");
 
-        Set<Store> stores = lookupService.getStoresForItemList(listItems, getCurrentLocation());
+        List<Store> stores = lookupService.getStoresForItemList(listItems, getCurrentLocation());
 
         if (stores.isEmpty()) {
             Toast.makeText(
