@@ -1,10 +1,15 @@
 package edu.scu.coen268.fetch;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -16,6 +21,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -134,7 +140,21 @@ public class ListActivity extends AppCompatActivity {
     public LatLng getCurrentLocation() {
         Log.i(TAG, "getCurrentLocation");
 
-        // TODO implement this with both test and real location lookup
+        boolean isDemo = ((FetchApplication) this.getApplication()).isDemo();
+
+        if (!isDemo) {
+            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(
+                        this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            return new LatLng(location.getLatitude(), location.getLongitude());
+        }
+
         return TestData.scuLatLng;
     }
 
