@@ -12,6 +12,7 @@ import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -48,7 +49,7 @@ public class LookupService extends Service {
         return START_NOT_STICKY;
     }
 
-    public Set<Store> getStoresForItemList(List<String> items, LatLng currentLocation) {
+    public List<Store> getStoresForItemList(List<String> items, LatLng currentLocation) {
         Log.i(TAG, "getStoresForItemList");
 
         double searchRadiusMiles = ((FetchApplication) this.getApplication()).getSearchRadiusMiles();
@@ -64,7 +65,8 @@ public class LookupService extends Service {
             }
         }
 
-        return stores;
+        // Sort the stores by distance to prevent awful routing problems
+        return sortStoresClosest(new ArrayList<>(stores), currentLocation);
     }
 
     public Optional<Store> pickClosestStoreInRange(
@@ -74,11 +76,24 @@ public class LookupService extends Service {
         Log.i(TAG, "pickClosestStoreInRange");
 
         // Order the stores by proximity
+        stores = sortStoresClosest(stores, currentLatLng);
+        
+        if (getDistanceMiles(stores.get(0).getLatLng(), currentLatLng) <= rangeInMiles) {
+            return Optional.of(stores.get(0));
+        }
+
+        return Optional.empty();
+    }
+
+    public List<Store> sortStoresClosest(List<Store> stores, LatLng origin) {
+        Log.i(TAG, "sortStoresClosest");
+        
+        // Order the stores by proximity
         stores.sort(new Comparator<Store>() {
             @Override
             public int compare(Store o1, Store o2) {
-                double dist1 = getDistanceMiles(o1.getLatLng(), currentLatLng);
-                double dist2 = getDistanceMiles(o2.getLatLng(), currentLatLng);
+                double dist1 = getDistanceMiles(o1.getLatLng(), origin);
+                double dist2 = getDistanceMiles(o2.getLatLng(), origin);
                 if (dist1 < dist2) {
                     return -1;
                 } else if (dist1 > dist2) {
@@ -87,12 +102,8 @@ public class LookupService extends Service {
                 return 0;
             }
         });
-        
-        if (getDistanceMiles(stores.get(0).getLatLng(), currentLatLng) <= rangeInMiles) {
-            return Optional.of(stores.get(0));
-        }
 
-        return Optional.empty();
+        return stores;
     }
 
     // This method was adapted from
