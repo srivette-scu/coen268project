@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public final class TestData {
@@ -35,6 +36,7 @@ public final class TestData {
             37.36787141649834,
             -122.03588330586433);
 
+    // useful for verifying correct geographic sorting and filtering
     public static Store kharkov = new Store(
             "Kharkov",
             "The Ukraine",
@@ -43,9 +45,16 @@ public final class TestData {
 
     public static Map<String, Store> keywordToStoreMap = new HashMap<>();
     static {
+        // Trader Joe's
         keywordToStoreMap.put("fish", traderJoes);
+
+        // Whole Foods
         keywordToStoreMap.put("cheese", wholeFoods);
+
+        // Target
         keywordToStoreMap.put("soap", target);
+
+        // Debug
         keywordToStoreMap.put("soap", kharkov);
     }
 
