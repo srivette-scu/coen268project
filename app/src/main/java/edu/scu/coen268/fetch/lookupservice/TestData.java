@@ -31,8 +31,6 @@ public final class TestData {
             "some address",
             37.36787141649834, -122.03588330586433);
 
-<<<<<<< Updated upstream
-=======
     public static Store kharkov = new Store(
             "Kharkov",
             "The Ukraine",
@@ -58,14 +56,11 @@ public final class TestData {
             "1601 Coleman Ave, Santa Clara, CA 95050",
             37.3570353,-121.9415003);
 
->>>>>>> Stashed changes
     public static Map<String, Store> keywordToStoreMap = new HashMap<>();
     static {
         keywordToStoreMap.put("fish", traderJoes);
         keywordToStoreMap.put("cheese", wholeFoods);
         keywordToStoreMap.put("soap", target);
-<<<<<<< Updated upstream
-=======
         keywordToStoreMap.put("lamp", target);
         keywordToStoreMap.put("pan", target);
         keywordToStoreMap.put("pans", target);
@@ -125,7 +120,6 @@ public final class TestData {
 
         // Debug
         keywordToStoreMap.put("soap", kharkov);
->>>>>>> Stashed changes
     }
 
     public static void populateDBWithTestData(SQLiteDatabase db) {
