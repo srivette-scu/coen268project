@@ -42,11 +42,11 @@
                 android:textColor="@color/white"/>
 
             <ImageView
-                android:layout_width="40dp"
+                android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_marginLeft="180dp"
                 android:src="@drawable/arrow_thick_right"
-                android:onClick="gotoSettings"/>
+                android:onClick="gotoMaps"/>
         </LinearLayout>
 
         <LinearLayout
@@ -61,6 +61,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:fontFamily="@font/roboto_medium"
+                android:onClick="setCurrentListActive"
                 android:text="@string/current_list"/>
 
             <Button
@@ -69,6 +70,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:fontFamily="@font/roboto_medium"
+                android:onClick="setStaleListActive"
                 android:text="@string/wish_list"/>
         </LinearLayout>
 
@@ -93,8 +95,9 @@
         <ImageButton
             android:id="@+id/delete_button"
             android:layout_height="82dp"
+            android:layout_width="82dp"
             android:scaleType="fitXY"
-            android:background=""
+            android:onClick="deleteItems"
             android:layout_weight="1"
             android:layout_marginRight="30dp"
             app:srcCompat="@drawable/delete" />
@@ -103,8 +106,9 @@
             android:id="@+id/move_button"
             android:layout_marginHorizontal="30dp"
             android:layout_height="82dp"
+            android:layout_width="82dp"
             android:scaleType="fitXY"
-            android:background=""
+            android:onClick="moveToOtherList"
             android:layout_weight="1"
             app:srcCompat="@drawable/store" />
 
@@ -112,8 +116,8 @@
             android:id="@+id/edit_list_button"
             android:layout_marginLeft="30dp"
             android:layout_height="82dp"
+            android:layout_width="82dp"
             android:scaleType="fitXY"
-            android:background=""
             android:onClick="addToList"
             android:layout_weight="1"
             app:srcCompat="@drawable/add" />

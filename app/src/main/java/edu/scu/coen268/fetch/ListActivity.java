@@ -2,9 +2,11 @@ package edu.scu.coen268.fetch;
 
 import android.app.AlertDialog;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,11 +23,10 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 import edu.scu.coen268.fetch.lookupservice.LookupService;
 import edu.scu.coen268.fetch.lookupservice.Store;
-import edu.scu.coen268.fetch.lookupservice.TestData;
 
 public class ListActivity extends AppCompatActivity {
     String TAG = this.getClass().getCanonicalName();
@@ -34,7 +36,17 @@ public class ListActivity extends AppCompatActivity {
     private LookupService lookupService;
     private ListView listView;
 
-    List<String> listItems = new ArrayList<>();
+    private ItemsLists itemsLists = new ItemsLists();
+    private static String MAIN_LIST = "main";
+    private static String WISH_LIST = "wish";
+
+    private static List<String> defaultList = new ArrayList<>();
+    static {
+        defaultList.add("Fish");
+        defaultList.add("Cheese");
+        defaultList.add("Soap");
+    }
+
     ArrayAdapter<String> arrayAdapter;
 
     @Override
@@ -43,17 +55,15 @@ public class ListActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_layout);
-
         listView = findViewById(R.id.list_view);
-        listItems.add("Piano");
-        listItems.add("Lute");
 
-        arrayAdapter = new ArrayAdapter<String>(
-                this,
-                android.R.layout.simple_list_item_multiple_choice,
-                listItems);
-        listView.setAdapter(arrayAdapter);
-        arrayAdapter.notifyDataSetChanged();
+        itemsLists.createList(WISH_LIST, new ArrayList<>());
+        itemsLists.createList(MAIN_LIST, defaultList);
+        itemsLists.setCurrentList(MAIN_LIST);
+
+        itemsLists.getCurrentList();
+
+        arrayAdapter = ListActivityHelpers.replaceAdapter(itemsLists, listView, getApplicationContext());
 
         // Do the service bit after the UI is live
         startLookupService();
@@ -69,6 +79,24 @@ public class ListActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    public void setCurrentListActive(View view) {
+        Log.i(TAG, "setCurrentListActive");
+
+        itemsLists.setCurrentList(MAIN_LIST);
+        arrayAdapter = ListActivityHelpers.replaceAdapter(itemsLists, listView, getApplicationContext());
+
+        Log.i(TAG, "debug");
+    }
+
+    public void setStaleListActive(View view) {
+        Log.i(TAG, "setStaleListActive");
+
+        itemsLists.setCurrentList(WISH_LIST);
+        arrayAdapter = ListActivityHelpers.replaceAdapter(itemsLists, listView, getApplicationContext());
+
+        Log.i(TAG, "debug");
+    }
+
     public void addToList(View view) {
         Log.i(TAG, "addToList");
 
@@ -81,8 +109,18 @@ public class ListActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String newItem = editText.getText().toString();
-                listItems.add(newItem);
-                arrayAdapter.notifyDataSetChanged();
+
+                if (itemsLists.getCurrentList().stream()
+                        .map(item -> item.toLowerCase())
+                        .collect(Collectors.toList())
+                        .contains(newItem.toLowerCase())) {
+                    Toast.makeText(
+                            getApplicationContext(),
+                            "Lists don't allow duplicate entries",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    arrayAdapter.add(newItem);
+                }
             }
         });
 
@@ -96,6 +134,35 @@ public class ListActivity extends AppCompatActivity {
         builder.show();
     }
 
+    public void moveToOtherList(View view) {
+        Log.i(TAG, "moveToOtherList");
+
+        String currentListName = itemsLists.getCurrentListName();
+        String otherListName;
+        if (currentListName.equalsIgnoreCase(MAIN_LIST)) {
+            otherListName = WISH_LIST;
+        } else {
+            otherListName = MAIN_LIST;
+        }
+
+        List<String> selectedItems = ListActivityHelpers.getCheckedItems(listView, itemsLists);
+
+        for (String item: selectedItems) {
+            arrayAdapter.remove(item);
+            itemsLists.addToList(otherListName, item);
+        }
+    }
+
+    public void deleteItems(View view) {
+        Log.i(TAG, "deleteItems");
+
+        List<String> itemsToDelete = ListActivityHelpers.getCheckedItems(listView, itemsLists);
+        for (String itemToDelete : itemsToDelete) {
+            itemsLists.removeFromCurrentList(itemToDelete);
+            arrayAdapter.remove(itemToDelete);
+        }
+    }
+
     public void gotoSettings(View view) {
         Log.i(TAG, "gotoSettings");
 
@@ -106,9 +173,22 @@ public class ListActivity extends AppCompatActivity {
     public void gotoMaps(View view) {
         Log.i(TAG, "gotoMaps");
 
-        Set<Store> stores = lookupService.getStoresForItemListDummy(listItems, getCurrentLocation());
+        LatLng currentLocation = ListActivityHelpers.getCurrentLocation(
+                ((FetchApplication) this.getApplication()).isDemo(),
+                (LocationManager) getSystemService(Context.LOCATION_SERVICE),
+                getApplicationContext(),
+                this);
+        List<Store> stores = lookupService.getStoresForItemList(
+                itemsLists.getCurrentList(),
+                currentLocation);
 
-        LatLng currentLocation = getCurrentLocation();
+        if (stores.isEmpty()) {
+            Toast.makeText(
+                    getApplicationContext(),
+                    "No stores within search radius, try expanding your search.",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
 
         StringBuilder mapsAddressBuilder = new StringBuilder("https://www.google.com/maps/dir");
         mapsAddressBuilder.append("/" + currentLocation.latitude + "," + currentLocation.longitude);
@@ -119,13 +199,6 @@ public class ListActivity extends AppCompatActivity {
 
         Intent mapsIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mapsAddressBuilder.toString()));
         startActivity(mapsIntent);
-    }
-
-    public LatLng getCurrentLocation() {
-        Log.i(TAG, "getCurrentLocation");
-
-        // TODO implement this with both test and real location lookup
-        return TestData.scuLatLng;
     }
 
     public void startLookupService() {
