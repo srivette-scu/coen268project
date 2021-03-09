@@ -2,6 +2,9 @@ package edu.scu.coen268.fetch;
 
 import android.util.Log;
 
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +16,8 @@ public class ItemsLists {
     private Map<String, List<String>> listMap = new HashMap<>();
 
     public void createList(String listName, List<String> newList) {
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(listName));
+        Preconditions.checkNotNull(newList);
         Log.i(TAG, "createList");
 
         if (listMap.entrySet().contains(listName)) {
@@ -23,6 +28,7 @@ public class ItemsLists {
     }
 
     public void setCurrentList(String listName) {
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(listName));
         Log.i(TAG, "setCurrentList");
 
         if (!listMap.keySet().contains(listName)) {
@@ -31,17 +37,9 @@ public class ItemsLists {
         currentList = listName;
     }
 
-    public void addToCurrentList(String item) {
-        Log.i(TAG, "addToCurrentList");
-
-        if (currentList == null) {
-            throw new RuntimeException("Must initialize list before adding to it");
-        }
-
-        listMap.get(currentList).add(item);
-    }
-
     public void addToList(String listName, String listItem) {
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(listItem));
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(listItem));
         Log.i(TAG, "addToList");
 
         if (!listMap.keySet().contains(listName)) {
@@ -58,6 +56,7 @@ public class ItemsLists {
     }
 
     public void removeFromCurrentList(String item) {
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(item));
         Log.i(TAG, "removeFromCurrentList");
 
         if (currentList == null) {

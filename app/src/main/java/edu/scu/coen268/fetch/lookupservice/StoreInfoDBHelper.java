@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +49,9 @@ public class StoreInfoDBHelper extends SQLiteOpenHelper {
     }
 
     public static long addToDb(SQLiteDatabase db, String keyword, Store store) {
+        Preconditions.checkNotNull(db);
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(keyword));
+        Preconditions.checkNotNull(store);
         Log.i(TAG, "addToDbStructured");
 
         ContentValues contentValues = new ContentValues();
@@ -62,6 +68,8 @@ public class StoreInfoDBHelper extends SQLiteOpenHelper {
     }
 
     public static List<Store> getStoresForKeyword(SQLiteDatabase db, String keyword) {
+        Preconditions.checkNotNull(db);
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(keyword));
         Log.i(TAG, "getStoresForKeyword");
 
         List<Store> stores = new ArrayList<>();

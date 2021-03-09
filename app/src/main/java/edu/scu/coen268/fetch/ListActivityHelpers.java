@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.common.base.Preconditions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,8 @@ public class ListActivityHelpers extends AppCompatActivity {
     static String TAG = "ListActivityImpl";
 
     public static List<String> getCheckedItems(ListView listView, ItemsLists itemsLists) {
+        Preconditions.checkNotNull(listView);
+        Preconditions.checkNotNull(itemsLists);
         Log.i(TAG, "getCheckedItems");
 
         List<String> selectedItems = new ArrayList<>();
@@ -44,6 +47,9 @@ public class ListActivityHelpers extends AppCompatActivity {
             LocationManager locationManager,
             Context context,
             Activity activity) {
+        Preconditions.checkNotNull(locationManager);
+        Preconditions.checkNotNull(context);
+        Preconditions.checkNotNull(activity);
         Log.i(TAG, "getCurrentLocation");
 
 
@@ -63,6 +69,9 @@ public class ListActivityHelpers extends AppCompatActivity {
     }
 
     public static ArrayAdapter replaceAdapter(ItemsLists itemsLists, ListView listView, Context context) {
+        Preconditions.checkNotNull(itemsLists);
+        Preconditions.checkNotNull(listView);
+        Preconditions.checkNotNull(context);
         ArrayAdapter newArrayAdapter = new ArrayAdapter<>(
                 context,
                 android.R.layout.simple_list_item_multiple_choice,

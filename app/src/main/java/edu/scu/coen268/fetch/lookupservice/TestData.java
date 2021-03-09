@@ -33,11 +33,6 @@ public final class TestData {
             "some address",
             37.36787141649834, -122.03588330586433);
 
-    public static Store kharkov = new Store(
-            "Kharkov",
-            "The Ukraine",
-            49.978120510315215, 36.22342206859459);
-
     public static Store walmart = new Store(
             "Walmart",
             "3255 Mission College Blvd, Santa Clara, CA 95054",
