@@ -45,6 +45,12 @@ public class SettingsActivity extends AppCompatActivity {
         ((FetchApplication) this.getApplication()).setSearchRadiusMiles(7);
     }
 
+    public void longDistance(View view) {
+        Log.i(TAG, "longDistance");
+
+        ((FetchApplication) this.getApplication()).setSearchRadiusMiles(50);
+    }
+
     public void helpAndFeedback(View view) {
         Log.i(TAG, "helpAndFeedback");
 
