@@ -41,6 +41,22 @@ public class ItemsLists {
         listMap.get(currentList).add(item);
     }
 
+    public void addToList(String listName, String listItem) {
+        Log.i(TAG, "addToList");
+
+        if (!listMap.keySet().contains(listName)) {
+            throw new RuntimeException("Cannot add to non-existant list");
+        }
+
+        listMap.get(listName).add(listItem);
+    }
+
+    public String getCurrentListName() {
+        Log.i(TAG, "getCurrentListName");
+
+        return currentList;
+    }
+
     public void removeFromCurrentList(String item) {
         Log.i(TAG, "removeFromCurrentList");
 
