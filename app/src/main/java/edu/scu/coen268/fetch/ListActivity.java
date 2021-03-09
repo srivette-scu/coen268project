@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -27,6 +28,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import edu.scu.coen268.fetch.lookupservice.LookupService;
 import edu.scu.coen268.fetch.lookupservice.Store;
@@ -40,7 +42,17 @@ public class ListActivity extends AppCompatActivity {
     private LookupService lookupService;
     private ListView listView;
 
-    List<String> listItems = new ArrayList<>();
+    private ItemsLists itemsLists = new ItemsLists();
+    private static String MAIN_LIST = "main";
+    private static String STALE_LIST = "stale";
+
+    private static List<String> defaultList = new ArrayList<>();
+    static {
+        defaultList.add("Fish");
+        defaultList.add("Cheese");
+        defaultList.add("Soap");
+    }
+
     ArrayAdapter<String> arrayAdapter;
 
     @Override
@@ -49,16 +61,22 @@ public class ListActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_layout);
-
         listView = findViewById(R.id.list_view);
-        listItems.add("Fish");
-        listItems.add("Cheese");
-        listItems.add("Soap");
 
-        arrayAdapter = new ArrayAdapter<String>(
+        itemsLists.createList(STALE_LIST, new ArrayList<>());
+        itemsLists.createList(MAIN_LIST, new ArrayList<>());
+        itemsLists.setCurrentList(MAIN_LIST);
+
+        itemsLists.addToCurrentList("Fish");
+        itemsLists.addToCurrentList("Cheese");
+        itemsLists.addToCurrentList("Soap");
+
+        itemsLists.getCurrentList();
+
+        arrayAdapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_list_item_multiple_choice,
-                listItems);
+                itemsLists.getCurrentList());
         listView.setAdapter(arrayAdapter);
         arrayAdapter.notifyDataSetChanged();
 
@@ -76,6 +94,34 @@ public class ListActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    public void setCurrentListActive(View view) {
+        Log.i(TAG, "setCurrentListActive");
+
+        itemsLists.setCurrentList(MAIN_LIST);
+        arrayAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_multiple_choice,
+                itemsLists.getCurrentList());
+        listView.setAdapter(arrayAdapter);
+        arrayAdapter.notifyDataSetChanged();
+
+        Log.i(TAG, "debug");
+    }
+
+    public void setStaleListActive(View view) {
+        Log.i(TAG, "setStaleListActive");
+
+        itemsLists.setCurrentList(STALE_LIST);
+        arrayAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_multiple_choice,
+                itemsLists.getCurrentList());
+        listView.setAdapter(arrayAdapter);
+        arrayAdapter.notifyDataSetChanged();
+
+        Log.i(TAG, "debug");
+    }
+
     public void addToList(View view) {
         Log.i(TAG, "addToList");
 
@@ -88,8 +134,18 @@ public class ListActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String newItem = editText.getText().toString();
-                listItems.add(newItem);
-                arrayAdapter.notifyDataSetChanged();
+
+                if (itemsLists.getCurrentList().stream()
+                        .map(item -> item.toLowerCase())
+                        .collect(Collectors.toList())
+                        .contains(newItem.toLowerCase())) {
+                    Toast.makeText(
+                            getApplicationContext(),
+                            "Lists don't allow duplicate entries",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    arrayAdapter.add(newItem);
+                }
             }
         });
 
@@ -103,6 +159,31 @@ public class ListActivity extends AppCompatActivity {
         builder.show();
     }
 
+    public List<String> getCheckedItems() {
+        Log.i(TAG, "getCheckedItems");
+
+        List<String> selectedItems = new ArrayList<>();
+        SparseBooleanArray selectedPostions = listView.getCheckedItemPositions();
+
+        for (int i=0; i<itemsLists.getCurrentList().size(); i++) {
+            if (selectedPostions.get(i)) {
+                selectedItems.add(itemsLists.getCurrentList().get(i));
+            }
+        }
+
+        return selectedItems;
+    }
+
+    public void deleteItems(View view) {
+        Log.i(TAG, "deleteItems");
+
+        List<String> itemsToDelete = getCheckedItems();
+        for (String itemToDelete : itemsToDelete) {
+            itemsLists.removeFromCurrentList(itemToDelete);
+            arrayAdapter.remove(itemToDelete);
+        }
+    }
+
     public void gotoSettings(View view) {
         Log.i(TAG, "gotoSettings");
 
@@ -113,7 +194,7 @@ public class ListActivity extends AppCompatActivity {
     public void gotoMaps(View view) {
         Log.i(TAG, "gotoMaps");
 
-        List<Store> stores = lookupService.getStoresForItemList(listItems, getCurrentLocation());
+        List<Store> stores = lookupService.getStoresForItemList(itemsLists.getCurrentList(), getCurrentLocation());
 
         if (stores.isEmpty()) {
             Toast.makeText(
