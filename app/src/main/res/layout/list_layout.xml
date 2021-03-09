@@ -61,6 +61,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:fontFamily="@font/roboto_medium"
+                android:onClick="setCurrentListActive"
                 android:text="@string/current_list"/>
 
             <Button
@@ -69,6 +70,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:fontFamily="@font/roboto_medium"
+                android:onClick="setStaleListActive"
                 android:text="@string/wish_list"/>
         </LinearLayout>
 
@@ -95,6 +97,7 @@
             android:layout_height="82dp"
             android:layout_width="82dp"
             android:scaleType="fitXY"
+            android:onClick="deleteItems"
             android:layout_weight="1"
             android:layout_marginRight="30dp"
             app:srcCompat="@drawable/delete" />
