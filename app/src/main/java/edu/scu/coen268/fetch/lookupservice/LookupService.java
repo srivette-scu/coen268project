@@ -8,6 +8,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.common.base.Preconditions;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -47,6 +48,8 @@ public class LookupService extends Service {
     }
 
     public List<Store> getStoresForItemList(List<String> items, LatLng currentLocation) {
+        Preconditions.checkNotNull(items);
+        Preconditions.checkNotNull(currentLocation);
         Log.i(TAG, "getStoresForItemList");
 
         double searchRadiusMiles = ((FetchApplication) this.getApplication()).getSearchRadiusMiles();
@@ -68,14 +71,17 @@ public class LookupService extends Service {
 
     public Optional<Store> pickClosestStoreInRange(
             List<Store> stores,
-            LatLng currentLatLng,
+            LatLng currentLocation,
             double rangeInMiles) {
+        Preconditions.checkNotNull(stores);
+        Preconditions.checkNotNull(currentLocation);
+        Preconditions.checkNotNull(rangeInMiles);
         Log.i(TAG, "pickClosestStoreInRange");
 
         // Order the stores by proximity
-        stores = sortStoresClosest(stores, currentLatLng);
+        stores = sortStoresClosest(stores, currentLocation);
         
-        if (getDistanceMiles(stores.get(0).getLatLng(), currentLatLng) <= rangeInMiles) {
+        if (getDistanceMiles(stores.get(0).getLatLng(), currentLocation) <= rangeInMiles) {
             return Optional.of(stores.get(0));
         }
 
@@ -83,6 +89,8 @@ public class LookupService extends Service {
     }
 
     public List<Store> sortStoresClosest(List<Store> stores, LatLng origin) {
+        Preconditions.checkNotNull(stores);
+        Preconditions.checkNotNull(origin);
         Log.i(TAG, "sortStoresClosest");
         
         // Order the stores by proximity
@@ -107,6 +115,8 @@ public class LookupService extends Service {
     // https://stackoverflow.com/questions/3694380/calculating-distance-between-two-points-using-latitude-longitude
     // because re-deriving it is silly
     public double getDistanceMiles(LatLng origin, LatLng dest) {
+        Preconditions.checkNotNull(origin);
+        Preconditions.checkNotNull(dest);
         Log.i(TAG, "getDistanceMiles");
 
         final int R = 6371; // Radius of the earth
