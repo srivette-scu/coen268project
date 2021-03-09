@@ -44,7 +44,7 @@ public class ListActivity extends AppCompatActivity {
 
     private ItemsLists itemsLists = new ItemsLists();
     private static String MAIN_LIST = "main";
-    private static String STALE_LIST = "stale";
+    private static String WISH_LIST = "wish";
 
     private static List<String> defaultList = new ArrayList<>();
     static {
@@ -63,7 +63,7 @@ public class ListActivity extends AppCompatActivity {
         setContentView(R.layout.list_layout);
         listView = findViewById(R.id.list_view);
 
-        itemsLists.createList(STALE_LIST, new ArrayList<>());
+        itemsLists.createList(WISH_LIST, new ArrayList<>());
         itemsLists.createList(MAIN_LIST, new ArrayList<>());
         itemsLists.setCurrentList(MAIN_LIST);
 
@@ -111,7 +111,7 @@ public class ListActivity extends AppCompatActivity {
     public void setStaleListActive(View view) {
         Log.i(TAG, "setStaleListActive");
 
-        itemsLists.setCurrentList(STALE_LIST);
+        itemsLists.setCurrentList(WISH_LIST);
         arrayAdapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_list_item_multiple_choice,
@@ -157,6 +157,25 @@ public class ListActivity extends AppCompatActivity {
         });
 
         builder.show();
+    }
+
+    public void moveToOtherList(View view) {
+        Log.i(TAG, "moveToOtherList");
+
+        String currentListName = itemsLists.getCurrentListName();
+        String otherListName;
+        if (currentListName.equalsIgnoreCase(MAIN_LIST)) {
+            otherListName = WISH_LIST;
+        } else {
+            otherListName = MAIN_LIST;
+        }
+
+        List<String> selectedItems = getCheckedItems();
+
+        for (String item: selectedItems) {
+            arrayAdapter.remove(item);
+            itemsLists.addToList(otherListName, item);
+        }
     }
 
     public List<String> getCheckedItems() {

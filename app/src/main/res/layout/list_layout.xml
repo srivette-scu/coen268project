@@ -108,6 +108,7 @@
             android:layout_height="82dp"
             android:layout_width="82dp"
             android:scaleType="fitXY"
+            android:onClick="moveToOtherList"
             android:layout_weight="1"
             app:srcCompat="@drawable/store" />
 
