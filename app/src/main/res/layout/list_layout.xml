@@ -94,10 +94,11 @@
 
         <ImageButton
             android:id="@+id/delete_button"
-            android:layout_height="82dp"
-            android:layout_width="82dp"
+            android:layout_height="78dp"
+            android:layout_width="78dp"
             android:scaleType="fitXY"
             android:onClick="deleteItems"
+            android:background="@color/transparent"
             android:layout_weight="1"
             android:layout_marginRight="30dp"
             app:srcCompat="@drawable/delete" />
@@ -105,20 +106,22 @@
         <ImageButton
             android:id="@+id/move_button"
             android:layout_marginHorizontal="30dp"
-            android:layout_height="82dp"
-            android:layout_width="82dp"
+            android:layout_height="78dp"
+            android:layout_width="78dp"
             android:scaleType="fitXY"
             android:onClick="moveToOtherList"
+            android:background="@color/transparent"
             android:layout_weight="1"
             app:srcCompat="@drawable/store" />
 
         <ImageButton
             android:id="@+id/edit_list_button"
             android:layout_marginLeft="30dp"
-            android:layout_height="82dp"
-            android:layout_width="82dp"
+            android:layout_height="78dp"
+            android:layout_width="78dp"
             android:scaleType="fitXY"
             android:onClick="addToList"
+            android:background="@color/transparent"
             android:layout_weight="1"
             app:srcCompat="@drawable/add" />
 
