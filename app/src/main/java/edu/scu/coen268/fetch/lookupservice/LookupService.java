@@ -1,9 +1,7 @@
 package edu.scu.coen268.fetch.lookupservice;
 
 import android.app.Service;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Binder;
 import android.os.IBinder;
@@ -12,7 +10,6 @@ import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;

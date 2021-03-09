@@ -1,20 +1,16 @@
 package edu.scu.coen268.fetch;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -22,7 +18,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -32,7 +27,6 @@ import java.util.stream.Collectors;
 
 import edu.scu.coen268.fetch.lookupservice.LookupService;
 import edu.scu.coen268.fetch.lookupservice.Store;
-import edu.scu.coen268.fetch.lookupservice.TestData;
 
 public class ListActivity extends AppCompatActivity {
     String TAG = this.getClass().getCanonicalName();
@@ -64,21 +58,12 @@ public class ListActivity extends AppCompatActivity {
         listView = findViewById(R.id.list_view);
 
         itemsLists.createList(WISH_LIST, new ArrayList<>());
-        itemsLists.createList(MAIN_LIST, new ArrayList<>());
+        itemsLists.createList(MAIN_LIST, defaultList);
         itemsLists.setCurrentList(MAIN_LIST);
-
-        itemsLists.addToCurrentList("Fish");
-        itemsLists.addToCurrentList("Cheese");
-        itemsLists.addToCurrentList("Soap");
 
         itemsLists.getCurrentList();
 
-        arrayAdapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_multiple_choice,
-                itemsLists.getCurrentList());
-        listView.setAdapter(arrayAdapter);
-        arrayAdapter.notifyDataSetChanged();
+        arrayAdapter = ListActivityHelpers.replaceAdapter(itemsLists, listView, getApplicationContext());
 
         // Do the service bit after the UI is live
         startLookupService();
@@ -98,12 +83,7 @@ public class ListActivity extends AppCompatActivity {
         Log.i(TAG, "setCurrentListActive");
 
         itemsLists.setCurrentList(MAIN_LIST);
-        arrayAdapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_multiple_choice,
-                itemsLists.getCurrentList());
-        listView.setAdapter(arrayAdapter);
-        arrayAdapter.notifyDataSetChanged();
+        arrayAdapter = ListActivityHelpers.replaceAdapter(itemsLists, listView, getApplicationContext());
 
         Log.i(TAG, "debug");
     }
@@ -112,12 +92,7 @@ public class ListActivity extends AppCompatActivity {
         Log.i(TAG, "setStaleListActive");
 
         itemsLists.setCurrentList(WISH_LIST);
-        arrayAdapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_multiple_choice,
-                itemsLists.getCurrentList());
-        listView.setAdapter(arrayAdapter);
-        arrayAdapter.notifyDataSetChanged();
+        arrayAdapter = ListActivityHelpers.replaceAdapter(itemsLists, listView, getApplicationContext());
 
         Log.i(TAG, "debug");
     }
@@ -170,7 +145,7 @@ public class ListActivity extends AppCompatActivity {
             otherListName = MAIN_LIST;
         }
 
-        List<String> selectedItems = getCheckedItems();
+        List<String> selectedItems = ListActivityHelpers.getCheckedItems(listView, itemsLists);
 
         for (String item: selectedItems) {
             arrayAdapter.remove(item);
@@ -178,25 +153,10 @@ public class ListActivity extends AppCompatActivity {
         }
     }
 
-    public List<String> getCheckedItems() {
-        Log.i(TAG, "getCheckedItems");
-
-        List<String> selectedItems = new ArrayList<>();
-        SparseBooleanArray selectedPostions = listView.getCheckedItemPositions();
-
-        for (int i=0; i<itemsLists.getCurrentList().size(); i++) {
-            if (selectedPostions.get(i)) {
-                selectedItems.add(itemsLists.getCurrentList().get(i));
-            }
-        }
-
-        return selectedItems;
-    }
-
     public void deleteItems(View view) {
         Log.i(TAG, "deleteItems");
 
-        List<String> itemsToDelete = getCheckedItems();
+        List<String> itemsToDelete = ListActivityHelpers.getCheckedItems(listView, itemsLists);
         for (String itemToDelete : itemsToDelete) {
             itemsLists.removeFromCurrentList(itemToDelete);
             arrayAdapter.remove(itemToDelete);
@@ -213,7 +173,14 @@ public class ListActivity extends AppCompatActivity {
     public void gotoMaps(View view) {
         Log.i(TAG, "gotoMaps");
 
-        List<Store> stores = lookupService.getStoresForItemList(itemsLists.getCurrentList(), getCurrentLocation());
+        LatLng currentLocation = ListActivityHelpers.getCurrentLocation(
+                ((FetchApplication) this.getApplication()).isDemo(),
+                (LocationManager) getSystemService(Context.LOCATION_SERVICE),
+                getApplicationContext(),
+                this);
+        List<Store> stores = lookupService.getStoresForItemList(
+                itemsLists.getCurrentList(),
+                currentLocation);
 
         if (stores.isEmpty()) {
             Toast.makeText(
@@ -222,8 +189,6 @@ public class ListActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
             return;
         }
-
-        LatLng currentLocation = getCurrentLocation();
 
         StringBuilder mapsAddressBuilder = new StringBuilder("https://www.google.com/maps/dir");
         mapsAddressBuilder.append("/" + currentLocation.latitude + "," + currentLocation.longitude);
@@ -234,27 +199,6 @@ public class ListActivity extends AppCompatActivity {
 
         Intent mapsIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mapsAddressBuilder.toString()));
         startActivity(mapsIntent);
-    }
-
-    public LatLng getCurrentLocation() {
-        Log.i(TAG, "getCurrentLocation");
-
-        boolean isDemo = ((FetchApplication) this.getApplication()).isDemo();
-
-        if (!isDemo) {
-            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(
-                        this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            }
-            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            return new LatLng(location.getLatitude(), location.getLongitude());
-        }
-
-        return TestData.scuLatLng;
     }
 
     public void startLookupService() {
